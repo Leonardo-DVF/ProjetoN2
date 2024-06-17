@@ -134,3 +134,15 @@ public class ServerSocketBiblioteca {
                     listaLivros.get(i).getQntdAlugados()
             );
         }
+        menuLivros.append(fmtLivros.toString());
+
+        fmtLivros = new Formatter();
+        menuLivros.append(fmtLivros.format("%150s","======================================================================================================================================================\n").toString());
+        menuLivros.append("__EOF");
+
+        fmtLivros.close();
+        
+        //System.out.println(menuLivros.toString());
+        
+        return menuLivros.toString();
+    }
