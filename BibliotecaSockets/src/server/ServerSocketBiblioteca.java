@@ -146,3 +146,21 @@ public class ServerSocketBiblioteca {
         
         return menuLivros.toString();
     }
+    
+    public static Boolean realizarLocacaoLivro(int idAlugarLivro){
+            List<LivroBiblioteca> listaLivros = new OperacoesLivros().consultaLivrosBibioteca();
+            for (int i = 0; i < listaLivros.size(); i++) {
+                if(listaLivros.get(i).getId().equals("" + idAlugarLivro)){
+                    try{
+                        int numExemplares = Integer.parseInt(listaLivros.get(i).getNumeroExemplaresLivros());
+                        int numExemplaresAlugados = Integer.parseInt(listaLivros.get(i).getQntdAlugados());
+                        if((numExemplares - numExemplaresAlugados) > 0){
+                            listaLivros.get(i).setQntdAlugados("" + (numExemplaresAlugados + 1));
+                        }else{
+                            return false;
+                        }
+                    }catch(Exception e){
+                        System.out.println("Erro ao alugar o livro.");
+                    }
+                }
+            }//Final do for
