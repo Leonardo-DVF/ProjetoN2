@@ -164,3 +164,21 @@ public class ServerSocketBiblioteca {
                     }
                 }
             }//Final do for
+
+         JSONArray baseLivrosAlugados = new JSONArray();
+            for (int i = 0; i < listaLivros.size(); i++) {
+                JSONObject jsonBaseLivroAlugados = new JSONObject();
+                jsonBaseLivroAlugados.put("id", listaLivros.get(i).getId());
+                jsonBaseLivroAlugados.put("titulo", listaLivros.get(i).getNomeLivro());
+                jsonBaseLivroAlugados.put("autor", listaLivros.get(i).getAutorLivro());
+                jsonBaseLivroAlugados.put("genero", listaLivros.get(i).getGeneroLivro());
+                jsonBaseLivroAlugados.put("exemplares", listaLivros.get(i).getNumeroExemplaresLivros());
+                jsonBaseLivroAlugados.put("alugados", listaLivros.get(i).getQntdAlugados());
+                baseLivrosAlugados.put(jsonBaseLivroAlugados);
+            }
+
+            Boolean realizaCadastro = new OperacoesLivros().atualizarBaseDadosLivro(baseLivrosAlugados);
+
+            return realizaCadastro;
+        
+    }
