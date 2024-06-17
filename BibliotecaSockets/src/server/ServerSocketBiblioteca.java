@@ -111,3 +111,26 @@ public class ServerSocketBiblioteca {
            System.out.println("Erro: " + e.getMessage());
         }
     }
+
+    public static String listarLivrosDatabase(){
+        List<LivroBiblioteca> listaLivros = new OperacoesLivros().consultaLivrosBibioteca();
+        StringBuilder menuLivros = new StringBuilder();
+        Formatter fmtLivros = new Formatter();
+        menuLivros.append(fmtLivros.format("%150s","======================================================================================================================================================\n").toString());
+
+        fmtLivros = new Formatter();
+        menuLivros.append(fmtLivros.format("%85s","LISTA DE LIVROS\n\n").toString());
+
+        fmtLivros = new Formatter();
+        fmtLivros.format("%15s %40s %25s %25s %14s %14s\n\n", "ID", "TÍTULO", "GÊNERO", "AUTOR", "QUANTIDADE", "ALUGADOS");
+
+        for (int i = 0; i < listaLivros.size(); i++) {
+            fmtLivros.format("%15s %40s %25s %25s %14s %14s\n",
+                    listaLivros.get(i).getId(),
+                    listaLivros.get(i).getNomeLivro(),
+                    listaLivros.get(i).getGeneroLivro(),
+                    listaLivros.get(i).getAutorLivro(),
+                    listaLivros.get(i).getNumeroExemplaresLivros(),
+                    listaLivros.get(i).getQntdAlugados()
+            );
+        }
