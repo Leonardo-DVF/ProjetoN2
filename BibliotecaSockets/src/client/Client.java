@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+
 public class Client {
     public static void main(String[] args) throws IOException {
         // Define a porta e o host para a conexão com o servidor
