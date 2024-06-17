@@ -182,3 +182,20 @@ public class ServerSocketBiblioteca {
             return realizaCadastro;
         
     }
+
+    public static Boolean realizarDevolucaoLivro(int idDevolverLivro){
+        List<LivroBiblioteca> listaLivros = new OperacoesLivros().consultaLivrosBibioteca();
+            for (int i = 0; i < listaLivros.size(); i++) {
+                if(listaLivros.get(i).getId().equals("" + idDevolverLivro)){
+                    try{
+                        int numExemplaresAlugados = Integer.parseInt(listaLivros.get(i).getQntdAlugados());
+                        if(numExemplaresAlugados > 0){
+                            listaLivros.get(i).setQntdAlugados("" + (numExemplaresAlugados - 1));
+                        }else{
+                            return false;
+                        }
+                    }catch(Exception e){
+                        System.out.println("Erro ao devolver o livro.");
+                    }
+                }
+            }//Final do for
