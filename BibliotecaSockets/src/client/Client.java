@@ -38,6 +38,6 @@ public class Client {
             System.out.println("Erro: " + e);
         } finally {
             // Bloco finally é executado sempre, independentemente de uma exceção ser lançada ou não
-        }
-    }
+        }
+    }
 }

@@ -16,7 +16,7 @@ public class ServerSocketBiblioteca {
         try {
             String FILE_PATH = ".//src//server//database//databaseLivros.json";
             ajustarDataBaseCampos(FILE_PATH);
-            // Cria um ServerSocket na porta especificada
+
             try (ServerSocket server = new ServerSocket(portChoice)) {
                 System.out.println("\n\nServidor pronto na porta -> " + portChoice);
 
@@ -41,7 +41,7 @@ public class ServerSocketBiblioteca {
             System.out.println("Erro ao iniciar o servidor: " + e.getMessage());
         }
     }
-    // Processa as mensagens enviadas pelo cliente
+
     private static void handleClientMessage(String messageInputClient, BufferedReader readerServer, PrintStream saida) throws Exception {
         switch (messageInputClient.toUpperCase()) {
             case "EXIT":

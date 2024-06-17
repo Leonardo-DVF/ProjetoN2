@@ -7,24 +7,18 @@ import java.util.List;
 
 public class LivroOperations {
 
-    // Método para listar todos os livros da biblioteca
     public static String listarLivrosDatabase() {
         List<LivroBiblioteca> listaLivros = new OperacoesLivros().consultaLivrosBibioteca();
         StringBuilder menuLivros = new StringBuilder();
         Formatter fmtLivros = new Formatter();
-        
-        // Adiciona uma linha separadora no início do menu
         menuLivros.append(fmtLivros.format("%150s", "======================================================================================================================================================\n").toString());
 
-        // Adiciona o título do menu
         fmtLivros = new Formatter();
         menuLivros.append(fmtLivros.format("%85s", "LISTA DE LIVROS\n\n").toString());
 
-        // Adiciona os cabeçalhos das colunas
         fmtLivros = new Formatter();
         fmtLivros.format("%15s %40s %25s %25s %14s %14s\n\n", "ID", "TÍTULO", "GÊNERO", "AUTOR", "QUANTIDADE", "ALUGADOS");
 
-        // Adiciona as informações de cada livro
         for (LivroBiblioteca livro : listaLivros) {
             fmtLivros.format("%15s %40s %25s %25s %14s %14s\n",
                     livro.getId(),
@@ -38,7 +32,6 @@ public class LivroOperations {
 
         menuLivros.append(fmtLivros.toString());
 
-        // Adiciona uma linha separadora no final do menu
         fmtLivros = new Formatter();
         menuLivros.append(fmtLivros.format("%150s", "======================================================================================================================================================\n").toString());
         menuLivros.append("__EOF");
@@ -48,7 +41,6 @@ public class LivroOperations {
         return menuLivros.toString();
     }
 
-    // Método para realizar a locação de um livro
     public static Boolean realizarLocacaoLivro(int idAlugarLivro) {
         List<LivroBiblioteca> listaLivros = new OperacoesLivros().consultaLivrosBibioteca();
         for (LivroBiblioteca livro : listaLivros) {
@@ -56,8 +48,6 @@ public class LivroOperations {
                 try {
                     int numExemplares = Integer.parseInt(livro.getNumeroExemplaresLivros());
                     int numExemplaresAlugados = Integer.parseInt(livro.getQntdAlugados());
-                    
-                    // Verifica se há exemplares disponíveis para alugar
                     if ((numExemplares - numExemplaresAlugados) > 0) {
                         livro.setQntdAlugados("" + (numExemplaresAlugados + 1));
                     } else {
@@ -70,7 +60,6 @@ public class LivroOperations {
             }
         }
 
-        // Atualiza a base de dados com as novas informações dos livros
         JSONArray baseLivrosAlugados = new JSONArray();
         for (LivroBiblioteca livro : listaLivros) {
             JSONObject jsonBaseLivroAlugados = new JSONObject();
@@ -86,15 +75,12 @@ public class LivroOperations {
         return new OperacoesLivros().atualizarBaseDadosLivro(baseLivrosAlugados);
     }
 
-    // Método para realizar a devolução de um livro
     public static Boolean realizarDevolucaoLivro(int idDevolverLivro) {
         List<LivroBiblioteca> listaLivros = new OperacoesLivros().consultaLivrosBibioteca();
         for (LivroBiblioteca livro : listaLivros) {
             if (livro.getId().equals("" + idDevolverLivro)) {
                 try {
                     int numExemplaresAlugados = Integer.parseInt(livro.getQntdAlugados());
-                    
-                    // Verifica se há exemplares alugados para devolver
                     if (numExemplaresAlugados > 0) {
                         livro.setQntdAlugados("" + (numExemplaresAlugados - 1));
                     } else {
@@ -107,7 +93,6 @@ public class LivroOperations {
             }
         }
 
-        // Atualiza a base de dados com as novas informações dos livros
         JSONArray baseLivrosDevolucao = new JSONArray();
         for (LivroBiblioteca livro : listaLivros) {
             JSONObject jsonBaseLivroAlugados = new JSONObject();
