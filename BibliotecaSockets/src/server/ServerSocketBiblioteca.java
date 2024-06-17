@@ -15,27 +15,22 @@ public class ServerSocketBiblioteca {
 
         try {
             String FILE_PATH = ".//src//server//database//databaseLivros.json";
-            ajustarDataBaseCampos(FILE_PATH); // Ajusta o banco de dados conforme necessário
-
+            ajustarDataBaseCampos(FILE_PATH);
             // Cria um ServerSocket na porta especificada
             try (ServerSocket server = new ServerSocket(portChoice)) {
                 System.out.println("\n\nServidor pronto na porta -> " + portChoice);
 
-                // Loop infinito para aceitar conexões de clientes
                 while (true) {
-                    try (
-                        // Aceita a conexão de um cliente
-                        Socket serverSocket = server.accept();
-                        InputStreamReader inputServer = new InputStreamReader(serverSocket.getInputStream());
-                        PrintStream saida = new PrintStream(serverSocket.getOutputStream());
-                        BufferedReader readerServer = new BufferedReader(inputServer)
-                    ) {
+                    try (Socket serverSocket = server.accept();
+                         InputStreamReader inputServer = new InputStreamReader(serverSocket.getInputStream());
+                         PrintStream saida = new PrintStream(serverSocket.getOutputStream());
+                         BufferedReader readerServer = new BufferedReader(inputServer)) {
+
                         System.out.println("Cliente conectado: " + serverSocket.getInetAddress().getHostAddress());
 
                         String messageInputClient;
-                        // Lê mensagens do cliente
                         while ((messageInputClient = readerServer.readLine()) != null) {
-                            handleClientMessage(messageInputClient, readerServer, saida); // Processa a mensagem do cliente
+                            handleClientMessage(messageInputClient, readerServer, saida);
                         }
                     } catch (Exception e) {
                         System.out.println("Erro no processamento da mensagem do cliente: " + e.getMessage());
@@ -46,49 +41,48 @@ public class ServerSocketBiblioteca {
             System.out.println("Erro ao iniciar o servidor: " + e.getMessage());
         }
     }
-
     // Processa as mensagens enviadas pelo cliente
     private static void handleClientMessage(String messageInputClient, BufferedReader readerServer, PrintStream saida) throws Exception {
         switch (messageInputClient.toUpperCase()) {
             case "EXIT":
-                saida.println("KILL"); // Envia sinal de encerramento ao cliente
+                saida.println("KILL");
                 readerServer.close();
                 saida.close();
                 break;
             case "AJUDA":
-                saida.println(Ajuda.menuAjuda()); // Envia o menu de ajuda ao cliente
+                saida.println(Ajuda.menuAjuda());
                 break;
             case "LISTAR":
-                saida.println(LivroOperations.listarLivrosDatabase()); // Lista os livros no banco de dados
+                saida.println(LivroOperations.listarLivrosDatabase());
                 break;
             case "ALUGAR":
-                saida.println("IDALUGAR"); // Solicita o ID do livro a ser alugado
+                saida.println("IDALUGAR");
                 break;
             case "DEVOLVER":
-                saida.println("IDDEVOLVER"); // Solicita o ID do livro a ser devolvido
+                saida.println("IDDEVOLVER");
                 break;
             case "CADASTRAR":
                 int idNovoCadastro = new OperacoesLivros().consultaNovoIdCadastroLivro();
-                saida.println("CADASTRARLIVRO\n" + idNovoCadastro); // Solicita os dados para cadastrar um novo livro
+                saida.println("CADASTRARLIVRO\n" + idNovoCadastro);
                 break;
             case "DADOSLIVRO":
                 JSONObject jsonLivroNovo = new JSONObject(readerServer.readLine());
                 Boolean realizaCadastro = new OperacoesLivros().cadastrarLivro(jsonLivroNovo);
-                saida.println(realizaCadastro ? "CADASTROSUCESSO\n__EOF" : "ERRO_CADASTRO"); // Confirma o sucesso ou falha do cadastro
+                saida.println(realizaCadastro ? "CADASTROSUCESSO\n__EOF" : "ERRO_CADASTRO");
                 break;
             case "DADOSIDALUGAR":
                 int idAlugarLivro = Integer.parseInt(readerServer.readLine());
                 Boolean realizaAluguel = LivroOperations.realizarLocacaoLivro(idAlugarLivro);
-                saida.println(realizaAluguel ? "ALUGADOSUCESSO\n_EOF" : "ALUGUELSEMSUCESSO\n_EOF"); // Confirma o sucesso ou falha do aluguel
+                saida.println(realizaAluguel ? "ALUGADOSUCESSO\n__EOF" : "ALUGUELSEMSUCESSO\n__EOF");
                 break;
             case "DADOSIDDEVOLVER":
                 int idDevolverLivro = Integer.parseInt(readerServer.readLine());
                 Boolean realizaDevolucao = LivroOperations.realizarDevolucaoLivro(idDevolverLivro);
-                saida.println(realizaDevolucao ? "DEVOLVIDOSUCESSO\n_EOF" : "DEVOLUCAOSEMSUCESSO\n_EOF"); // Confirma o sucesso ou falha da devolução
+                saida.println(realizaDevolucao ? "DEVOLVIDOSUCESSO\n__EOF" : "DEVOLUCAOSEMSUCESSO\n__EOF");
                 break;
             default:
-                saida.println("DESCONHECIDO\n__EOF"); // Resposta para comando desconhecido
+                saida.println("DESCONHECIDO\n__EOF");
                 break;
-        }
-    }
+        }
+    }
 }
